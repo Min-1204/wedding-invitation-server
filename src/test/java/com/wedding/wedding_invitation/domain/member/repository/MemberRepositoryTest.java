@@ -56,6 +56,8 @@ public class MemberRepositoryTest {
         assertThat(saveMember.getAddressDetail()).isEqualTo("용인시");
         assertThat(saveMember.isPrivacyAgreed()).isTrue();
 
+        // Repository Test 회원가입 DB 저장 및 조회 검증 테스트 성공 
+
     }
 
 }
