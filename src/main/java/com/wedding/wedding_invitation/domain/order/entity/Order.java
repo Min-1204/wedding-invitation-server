@@ -1,6 +1,7 @@
-package com.wedding.wedding_invitation.domain.product.entity;
+package com.wedding.wedding_invitation.domain.order.entity;
 
 
+import com.wedding.wedding_invitation.domain.member.entity.Member;
 import com.wedding.wedding_invitation.global.domain.BaseTimeEntity;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -9,30 +10,26 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "products")
+@Table(name = "orders")
 @Getter
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class Product extends BaseTimeEntity {
+public class Order extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
-    private String product_name;
+    @ManyToOne
+    @JoinColumn(name = "member_id")
+    private Member member;
 
     @Column(nullable = false)
-    private int price;
+    private int totalPrice;
 
-    @Column(columnDefinition = "TEXT")
-    private String description;
-
+    @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private String mainImageUrl;
-
-    @Column(nullable = false)
-    private boolean sellable;
+    private OrderStatus status;
 
 }
