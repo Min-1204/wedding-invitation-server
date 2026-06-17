@@ -9,9 +9,14 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
     boolean existsByPhone(String phone);
     boolean existsByEmail(String email);
 
-    // 아이디찾기기능
-    // 비밀번호찾기기능
-    // 로그인기능
-    // 로그아웃기능
-    // 개인정보변경기능
+    // 아이디찾기
+    Member findByNameAndEmail(String name, String email);
+
+    // 비밀번호찾기
+    Member findByUsernameAndEmail(String username, String email);
+
+    // 로그인 (검증)
+    // 로그아웃 (실행)
+    // 비밀번호 변경 (검증 , 실행)
+    // 주소지 변경 (실행)
 }
