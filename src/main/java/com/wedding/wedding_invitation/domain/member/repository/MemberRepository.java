@@ -3,6 +3,8 @@ package com.wedding.wedding_invitation.domain.member.repository;
 import com.wedding.wedding_invitation.domain.member.entity.Member;
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import java.util.Optional;
+
 public interface MemberRepository extends JpaRepository<Member, Long> {
     // 회원가입기능 ( 아이디중복확인, 연락처중복확인, 이메일확인 )
     boolean existsByUsername(String username);
@@ -14,6 +16,8 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
 
     // 비밀번호찾기
     Member findByUsernameAndEmail(String username, String email);
+
+    Optional<Member> findByUsername(String username);
 
     // 로그인 (검증)
     // 로그아웃 (실행)

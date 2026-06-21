@@ -1,11 +1,20 @@
 package com.wedding.wedding_invitation.domain.member.service;
 
+import com.wedding.wedding_invitation.domain.member.dto.request.MemberChangePasswordRequest;
+import com.wedding.wedding_invitation.domain.member.dto.request.MemberLoginRequest;
 import com.wedding.wedding_invitation.domain.member.dto.request.MemberSignUpRequest;
+import com.wedding.wedding_invitation.domain.member.dto.response.MemberLoginResponse;
 import com.wedding.wedding_invitation.domain.member.entity.Member;
 import com.wedding.wedding_invitation.domain.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -43,15 +52,60 @@ public class MemberService {
         }
 
         memberRepository.save(request.toEntity(passwordEncoder.encode(request.getPassword())));
+    }
 
+    // 아이디 찾기
+    public String findUsername(String name, String email) {
+        Member user = memberRepository.findByNameAndEmail(name, email);
+        String findUser = user.getUsername();
+        return findUser;
+    }
+
+    // 비밀번호 찾기
+    public String findPassword (String username, String email) {
+        Member user = memberRepository.findByUsernameAndEmail(username, email);
+        String findUser = user.getPassword();
+        return findUser;
 
     }
 
-    // 아이디찾기
-    // 비밀번호찾기
     // 로그인
-    // 로그아웃
-    // 비밀번호 변경
-    // 주소지 변경
+    public MemberLoginResponse login(MemberLoginRequest request) {
+        
+        // 회원 존재 확인
+        Member user = memberRepository.findByUsername(request.getUsername())
+                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 아이디 입니다."));
 
+        // 회원 비밀번호 검증
+        if (!passwordEncoder.matches(request.getPassword(), user.getPassword())) {
+            throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
+        }
+
+        // 로그인 성공
+        return new MemberLoginResponse(user.getId(),user.getUsername(),user.getRole());
+    }
+    // 단일 책임 분리 ---> 별도 검증 및 회원존재 유효성 클래스 도입 검토 필요
+
+
+
+    // 비밀번호 변경
+    public String changePassword(MemberChangePasswordRequest request) {
+        Member user = memberRepository.findByUsername(request.getUsername())
+                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 회원 입니다."));
+
+                if(!passwordEncoder.matches(request.getCurrentPassword(), user.getPassword())) {
+                    throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
+                }
+
+                user.changePassword(passwordEncoder.encode(request.getNewPassword()));
+
+                memberRepository.save(user);
+
+                return "비밀번호 변경 성공";
+
+    }
+
+
+    // 주소지 변경
+    // 로그아웃
 }
