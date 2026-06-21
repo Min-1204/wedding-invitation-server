@@ -2,6 +2,7 @@ package com.wedding.wedding_invitation.domain.member.repository;
 
 
 import com.wedding.wedding_invitation.domain.member.entity.Member;
+import com.wedding.wedding_invitation.domain.member.entity.MemberRole;
 import com.wedding.wedding_invitation.global.config.JpaAuditConfig;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -24,7 +25,7 @@ public class MemberRepositoryTest {
     @Autowired
     private MemberRepository memberRepository;
 
-    // 테스트용 Member생성 Test
+    // 테스트용 Member 생성 Test
     private Member createMemberTest() {
         return Member.builder()
                 .name("홍길동")
@@ -39,6 +40,7 @@ public class MemberRepositoryTest {
                 .emailAgreement(true)
                 .smsAgreement(true)
                 .privacyAgreed(false)
+                .role(MemberRole.ROLE_USER)
                 .build();
     }
 
@@ -87,5 +89,8 @@ public class MemberRepositoryTest {
         assertThat(testPhone).isFalse();
 
     }
+    
+    
+    // 로그인 테스트 해야함
 
 }
