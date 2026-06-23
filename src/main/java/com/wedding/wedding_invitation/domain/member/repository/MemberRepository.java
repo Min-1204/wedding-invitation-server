@@ -10,11 +10,17 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
     boolean existsByEmail(String email);
 
     // 아이디찾기
-    Member findByNameAndEmail(String name, String email);
+    Optional<Member> findByNameAndEmail(String name, String email);
 
     // 비밀번호찾기
-    Member findByUsernameAndEmail(String username, String email);
+    Optional<Member> findByUsernameAndEmail(String username, String email);
 
+<<<<<<< Updated upstream
+=======
+    // 회원 찾기
+    Optional<Member> findByUsername(String username);
+
+>>>>>>> Stashed changes
     // 로그인 (검증)
     // 로그아웃 (실행)
     // 비밀번호 변경 (검증 , 실행)
