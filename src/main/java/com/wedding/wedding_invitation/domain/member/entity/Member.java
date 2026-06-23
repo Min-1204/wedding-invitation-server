@@ -67,8 +67,6 @@ public class Member extends BaseTimeEntity {
 
     private LocalDateTime deletedAt; // 탈퇴일자
 
-<<<<<<< Updated upstream
-=======
     @Enumerated(EnumType.STRING)
     private MemberRole role;
 
@@ -81,6 +79,5 @@ public class Member extends BaseTimeEntity {
         this.address = address;
         this.addressDetail = addressDetail;
     }
->>>>>>> Stashed changes
 
 }

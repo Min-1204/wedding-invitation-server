@@ -1,17 +1,21 @@
 package com.wedding.wedding_invitation.domain.member.service;
 
-<<<<<<< Updated upstream
-=======
 import com.wedding.wedding_invitation.domain.member.dto.request.MemberChangeAddressRequest;
 import com.wedding.wedding_invitation.domain.member.dto.request.MemberChangePasswordRequest;
 import com.wedding.wedding_invitation.domain.member.dto.request.MemberLoginRequest;
->>>>>>> Stashed changes
 import com.wedding.wedding_invitation.domain.member.dto.request.MemberSignUpRequest;
+import com.wedding.wedding_invitation.domain.member.dto.response.MemberLoginResponse;
 import com.wedding.wedding_invitation.domain.member.entity.Member;
 import com.wedding.wedding_invitation.domain.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -49,10 +53,9 @@ public class MemberService {
         }
 
         memberRepository.save(request.toEntity(passwordEncoder.encode(request.getPassword())));
+    }
 
-<<<<<<< Updated upstream
 
-=======
     // 아이디 찾기
     public String findUsername(String name, String email) {
         Member user = memberRepository.findByNameAndEmail(name, email)
@@ -67,14 +70,11 @@ public class MemberService {
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 회원 입니다."));
         String findUser = user.getPassword();
         return findUser;
->>>>>>> Stashed changes
     }
 
     // 아이디찾기
     // 비밀번호찾기
     // 로그인
-<<<<<<< Updated upstream
-=======
     public MemberLoginResponse login(MemberLoginRequest request) {
         
         // 회원 존재 확인
@@ -125,9 +125,24 @@ public class MemberService {
 
     }
 
->>>>>>> Stashed changes
-    // 로그아웃
     // 비밀번호 변경
-    // 주소지 변경
+    public String changePassword(MemberChangePasswordRequest request) {
+        Member user = memberRepository.findByUsername(request.getUsername())
+                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 회원 입니다."));
 
+                if(!passwordEncoder.matches(request.getCurrentPassword(), user.getPassword())) {
+                    throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
+                }
+
+                user.changePassword(passwordEncoder.encode(request.getNewPassword()));
+
+                memberRepository.save(user);
+
+                return "비밀번호 변경 성공";
+
+    }
+
+
+    // 주소지 변경
+    // 로그아웃
 }
