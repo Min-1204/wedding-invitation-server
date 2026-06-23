@@ -12,11 +12,12 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
     boolean existsByEmail(String email);
 
     // 아이디찾기
-    Member findByNameAndEmail(String name, String email);
+    Optional<Member> findByNameAndEmail(String name, String email);
 
     // 비밀번호찾기
-    Member findByUsernameAndEmail(String username, String email);
+    Optional<Member> findByUsernameAndEmail(String username, String email);
 
+    // 회원 찾기
     Optional<Member> findByUsername(String username);
 
     // 로그인 (검증)
