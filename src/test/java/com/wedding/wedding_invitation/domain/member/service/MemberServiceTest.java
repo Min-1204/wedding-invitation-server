@@ -186,12 +186,7 @@ public class MemberServiceTest {
     }
 
     @Test
-    @DisplayName("회원가입 실패 - 중복아이디 테스트")
-    void signUp_False_Username_Duplication_Test() {
-
-        MemberSignUpRequest request = createSignUpRequest(); // 멤버 생성 메서드
-
-        // given
+    @DisplayName("회원가입 실패 테스트")
     void signUp_False_Username_Duplication_Test() {
         MemberSignUpRequest request = createSignUpRequest();
         given(memberRepository.existsByUsername(anyString())).willReturn(true);
