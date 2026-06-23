@@ -47,11 +47,63 @@ public class MemberService {
 
     }
 
+<<<<<<< Updated upstream
     // 아이디찾기
     // 비밀번호찾기
     // 로그인
     // 로그아웃
     // 비밀번호 변경
     // 주소지 변경
+=======
+    public MemberLoginResponse login(MemberLoginRequest request) {
+        
+        // 회원 존재 확인
+        Member user = memberRepository.findByUsername(request.getUsername())
+                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 아이디 입니다."));
+
+        // 회원 비밀번호 검증
+        if (!passwordEncoder.matches(request.getPassword(), user.getPassword())) {
+            throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
+        }
+
+        // 로그인 성공
+        return new MemberLoginResponse(user.getId(),user.getUsername(),user.getRole());
+    }
+    // 단일 책임 분리 ---> 별도 검증 및 회원존재 유효성 클래스 도입 검토 필요
+
+
+
+    // 비밀번호 변경
+    public String changePassword(MemberChangePasswordRequest request) {
+        Member user = memberRepository.findByUsername(request.getUsername())
+                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 회원 입니다."));
+
+                if(!passwordEncoder.matches(request.getCurrentPassword(), user.getPassword())) {
+                    throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
+                }
+
+                user.changePassword(passwordEncoder.encode(request.getNewPassword()));
+
+                memberRepository.save(user);
+
+                return "비밀번호 변경 성공";
+
+    }
+
+
+    // 주소지 변경
+    public String changeAddress (MemberChangeAddressRequest request) {
+
+        Member member = memberRepository.findByUsername(request.getUsername())
+                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 회원 입니다."));
+
+        member.changeAddress(request.getZipCode(), request.getAddress(), request.getAddressDetail());
+
+        memberRepository.save(member);
+
+        return "주소가 변경되었습니다.";
+
+    }
+>>>>>>> Stashed changes
 
 }
