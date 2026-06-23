@@ -1,6 +1,12 @@
 package com.wedding.wedding_invitation.domain.member.service;
 
+import com.wedding.wedding_invitation.domain.member.dto.request.MemberChangeAddressRequest;
+import com.wedding.wedding_invitation.domain.member.dto.request.MemberChangePasswordRequest;
+import com.wedding.wedding_invitation.domain.member.dto.request.MemberLoginRequest;
 import com.wedding.wedding_invitation.domain.member.dto.request.MemberSignUpRequest;
+import com.wedding.wedding_invitation.domain.member.dto.response.MemberLoginResponse;
+import com.wedding.wedding_invitation.domain.member.entity.Member;
+import com.wedding.wedding_invitation.domain.member.entity.MemberRole;
 import com.wedding.wedding_invitation.domain.member.repository.MemberRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -8,9 +14,12 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.time.LocalDate;
+import java.util.Optional;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
@@ -18,16 +27,14 @@ import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.assertj.core.api.Assertions.*;
 
 @ExtendWith(MockitoExtension.class)
 @DisplayName("회원 서비스 JUnit 테스트")
 public class MemberServiceTest {
 
-<<<<<<< Updated upstream
-=======
     private static final Logger log = LoggerFactory.getLogger(MemberServiceTest.class);
 
->>>>>>> Stashed changes
     @Mock
     private MemberRepository memberRepository;
 
@@ -37,32 +44,6 @@ public class MemberServiceTest {
     @InjectMocks
     private MemberService memberService;
 
-<<<<<<< Updated upstream
-    private MemberSignUpRequest createMember() {
-       return  MemberSignUpRequest.builder()
-                .name("홍길동")
-                .username("testUser")
-                .password("1234")
-                .phone("010-1234-5678")
-                .birth(LocalDate.of(2000,1,1))
-                .email("test@email.com")
-                .zipCode("12345")
-                .address("경기도")
-                .addressDetail("용인")
-                .emailAgreement(true)
-                .smsAgreement(false)
-                .privacyAgreed(true)
-                .build();
-    }
-
-
-    @Test
-    @DisplayName("회원가입 성공 테스트")
-    void signUp_Success_Test() {
-        MemberSignUpRequest request = createMember();
-
-        // given DB 작동 로직 입력
-=======
 
     private Member createMemberEntity() {
         return Member.builder()
@@ -197,7 +178,6 @@ public class MemberServiceTest {
     @DisplayName("회원가입 성공 테스트")
     void signUp_Test() {
         MemberSignUpRequest request = createSignUpRequest();
->>>>>>> Stashed changes
         given(memberRepository.existsByUsername(anyString())).willReturn(false);
         given(memberRepository.existsByEmail(anyString())).willReturn(false);
         given(memberRepository.existsByPhone(anyString())).willReturn(false);
@@ -207,16 +187,13 @@ public class MemberServiceTest {
 
     @Test
     @DisplayName("회원가입 실패 - 중복아이디 테스트")
-<<<<<<< Updated upstream
-    void signUp_False_Username_Duplication() {
+    void signUp_False_Username_Duplication_Test() {
 
-        MemberSignUpRequest request = createMember(); // 멤버 생성 메서드
+        MemberSignUpRequest request = createSignUpRequest(); // 멤버 생성 메서드
 
         // given
-=======
     void signUp_False_Username_Duplication_Test() {
         MemberSignUpRequest request = createSignUpRequest();
->>>>>>> Stashed changes
         given(memberRepository.existsByUsername(anyString())).willReturn(true);
         assertThrows(IllegalArgumentException.class, () -> memberService.signUp(request));
         verify(memberRepository, never()).save(any());
