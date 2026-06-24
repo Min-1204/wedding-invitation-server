@@ -48,8 +48,6 @@ public class MemberServiceTest {
     // Member Entity 생성
     private Member createMemberEntity() {
         return Member.builder()
-    private Member createMemberEntity() {
-        return Member.builder()
                 .name("홍길동")
                 .username("testUser")
                 .password("1234")
