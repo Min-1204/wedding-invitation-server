@@ -36,8 +36,10 @@ public class MemberServiceTest {
     // Inject 주입하다. MemberService에 Mock 으로 지정한 PasswordEncoder와 MemberRepository를 주입.
     // 여기서 Mock 가짜로 만든것을 주입한다.
 
-    private MemberSignUpRequest createMember() {
-       return  MemberSignUpRequest.builder()
+
+    // Member Entity 생성
+    private Member createMemberEntity() {
+        return Member.builder()
                 .name("홍길동")
                 .username("testUser")
                 .password("1234")
@@ -53,6 +55,58 @@ public class MemberServiceTest {
                 .build();
     }
 
+
+    // Member 회원가입 DTO 생성
+    private MemberSignUpRequest createSignUpRequest() {
+        return MemberSignUpRequest.builder()
+                .name("홍길동")
+                .username("testUser")
+                .password("1234")
+                .phone("010-1234-5678")
+                .birth(LocalDate.of(2000, 1, 1))
+                .email("test@email.com")
+                .zipCode("12345")
+                .address("경기도")
+                .addressDetail("용인")
+                .emailAgreement(true)
+                .smsAgreement(false)
+                .privacyAgreed(true)
+                .role(MemberRole.ROLE_USER)
+                .build();
+    }
+
+
+
+    // Member 로그인 DTO 생성
+    private MemberLoginRequest createMemberLoginRequest() {
+        return MemberLoginRequest.builder()
+                .username("testUser")
+                .password("1234")
+                .build();
+    }
+
+
+    // Member 비밀번호변경 DTO 생성
+    private MemberChangePasswordRequest createMemberChangePasswordRequest() {
+        return MemberChangePasswordRequest.builder()
+                .username("testUser")
+                .currentPassword("1234")
+                .newPassword("4321")
+                .build();
+    }
+
+
+    // Member 주소변경 DTO 생성
+    private MemberChangeAddressRequest createMemberChangeAddressRequest() {
+        return MemberChangeAddressRequest.builder()
+                .username("testUser")
+                .zipCode("12345")
+                .address("경기도")
+                .addressDetail("용인")
+                .build();
+    }
+
+//    ===============================   테스트 로직 라인   ===============================
 
     @Test
     @DisplayName("회원가입 성공 테스트")
