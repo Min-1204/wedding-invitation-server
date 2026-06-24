@@ -1,6 +1,7 @@
 package com.wedding.wedding_invitation.domain.member.dto.request;
 
 import com.wedding.wedding_invitation.domain.member.entity.Member;
+import com.wedding.wedding_invitation.domain.member.entity.MemberRole;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -26,6 +27,7 @@ public class MemberSignUpRequest {
     private boolean emailAgreement; // 이메일 알림 동의
     private boolean smsAgreement;   // SMS 알림 동의
     private boolean privacyAgreed;  // 약관 동의
+    private MemberRole role;
 
     public Member toEntity(String encodePassword) {
         return Member.builder()
@@ -41,6 +43,7 @@ public class MemberSignUpRequest {
                 .emailAgreement(this.emailAgreement)
                 .smsAgreement(this.smsAgreement)
                 .privacyAgreed(this.privacyAgreed)
+                .role(this.role)
                 .build();
     }
 

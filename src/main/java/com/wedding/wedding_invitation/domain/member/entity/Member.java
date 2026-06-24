@@ -1,6 +1,11 @@
 package com.wedding.wedding_invitation.domain.member.entity;
 
 
+<<<<<<< Updated upstream
+=======
+import com.wedding.wedding_invitation.domain.member.dto.request.MemberChangeAddressRequest;
+import com.wedding.wedding_invitation.domain.member.dto.request.MemberChangePasswordRequest;
+>>>>>>> Stashed changes
 import com.wedding.wedding_invitation.global.domain.BaseTimeEntity;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -62,5 +67,17 @@ public class Member extends BaseTimeEntity {
 
     private LocalDateTime deletedAt; // 탈퇴일자
 
+    @Enumerated(EnumType.STRING)
+    private MemberRole role;
+
+
+    public void changePassword(String encodePassword) {
+        this.password = encodePassword;
+    }
+    public void changeAddress(String zipCode, String address, String addressDetail) {
+        this.zipCode = zipCode;
+        this.address = address;
+        this.addressDetail = addressDetail;
+    }
 
 }

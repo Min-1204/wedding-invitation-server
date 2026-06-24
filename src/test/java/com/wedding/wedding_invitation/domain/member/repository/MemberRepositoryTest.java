@@ -2,6 +2,7 @@ package com.wedding.wedding_invitation.domain.member.repository;
 
 
 import com.wedding.wedding_invitation.domain.member.entity.Member;
+import com.wedding.wedding_invitation.domain.member.entity.MemberRole;
 import com.wedding.wedding_invitation.global.config.JpaAuditConfig;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -12,6 +13,7 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.Import;
 
 import java.time.LocalDate;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -24,7 +26,7 @@ public class MemberRepositoryTest {
     @Autowired
     private MemberRepository memberRepository;
 
-    // 테스트용 Member생성 Test
+    // 테스트용 Member 생성 Test
     private Member createMemberTest() {
         return Member.builder()
                 .name("홍길동")
@@ -39,6 +41,7 @@ public class MemberRepositoryTest {
                 .emailAgreement(true)
                 .smsAgreement(true)
                 .privacyAgreed(false)
+                .role(MemberRole.ROLE_USER)
                 .build();
     }
 
@@ -91,9 +94,20 @@ public class MemberRepositoryTest {
         assertThat(testPhone).isFalse();
 
     }
+    
+    
+//    회원 찾기 테스트
+    @Test
+    @DisplayName("회원 테스트 - 성공")
+    void findByUser_Test () {
+        Member member = createMemberTest();
+        memberRepository.save(member);
+        Optional<Member> findUser = memberRepository.findByUsername("testUser");
+        assertThat(findUser).isPresent();
+        assertThat(findUser.get().getName()).isEqualTo("홍길동");
+        log.info("회원찾기 테스트 결과 {}", findUser);
+    }
 
-
-//    회원 찾기
     @Test
     @DisplayName("회원 테스트 - 존재하지 않는 회원")
     void findByUser_False_Test () {
