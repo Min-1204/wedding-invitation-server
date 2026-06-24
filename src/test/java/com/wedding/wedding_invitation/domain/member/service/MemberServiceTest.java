@@ -45,6 +45,9 @@ public class MemberServiceTest {
     private MemberService memberService;
 
 
+    // Member Entity 생성
+    private Member createMemberEntity() {
+        return Member.builder()
     private Member createMemberEntity() {
         return Member.builder()
                 .name("홍길동")
@@ -63,6 +66,7 @@ public class MemberServiceTest {
                 .build();
     }
 
+    // Member 회원가입 DTO 생성
     private MemberSignUpRequest createSignUpRequest() {
         return MemberSignUpRequest.builder()
                 .name("홍길동")
@@ -82,6 +86,8 @@ public class MemberServiceTest {
     }
 
 
+
+    // Member 로그인 DTO 생성
     private MemberLoginRequest createMemberLoginRequest() {
         return MemberLoginRequest.builder()
                 .username("testUser")
@@ -89,6 +95,8 @@ public class MemberServiceTest {
                 .build();
     }
 
+
+    // Member 비밀번호변경 DTO 생성
     private MemberChangePasswordRequest createMemberChangePasswordRequest() {
         return MemberChangePasswordRequest.builder()
                 .username("testUser")
@@ -97,6 +105,8 @@ public class MemberServiceTest {
                 .build();
     }
 
+
+    // Member 주소변경 DTO 생성
     private MemberChangeAddressRequest createMemberChangeAddressRequest() {
         return MemberChangeAddressRequest.builder()
                 .username("testUser")
@@ -105,6 +115,8 @@ public class MemberServiceTest {
                 .addressDetail("용인")
                 .build();
     }
+
+//    ===============================   테스트 로직 라인   ===============================
 
     @Test
     @DisplayName("아이디 중복 확인 테스트 - 사용 가능")

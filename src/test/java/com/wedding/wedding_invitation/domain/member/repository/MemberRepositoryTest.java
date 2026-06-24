@@ -45,6 +45,8 @@ public class MemberRepositoryTest {
                 .build();
     }
 
+
+    // DB 회원 저장
     @Test
     @DisplayName("회원 저장 테스트")
     void saveMemberTest() {
@@ -58,6 +60,7 @@ public class MemberRepositoryTest {
     }
 
 
+    // DB 아이디 조회
     @Test
     @DisplayName("아이디 중복확인 테스트 -> True 반환")
     void existsByUsernameTest() {
@@ -75,6 +78,7 @@ public class MemberRepositoryTest {
 
     }
 
+    // DB 아이디 조회
     @Test
     @DisplayName("없는아이디 중복확인 테스트 -> False 반환")
     void existsByUsernameTest_False() {
