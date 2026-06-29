@@ -1,9 +1,6 @@
 package com.wedding.wedding_invitation.domain.member.service;
 
-import com.wedding.wedding_invitation.domain.member.dto.request.MemberChangeAddressRequest;
-import com.wedding.wedding_invitation.domain.member.dto.request.MemberChangePasswordRequest;
-import com.wedding.wedding_invitation.domain.member.dto.request.MemberLoginRequest;
-import com.wedding.wedding_invitation.domain.member.dto.request.MemberSignUpRequest;
+import com.wedding.wedding_invitation.domain.member.dto.request.*;
 import com.wedding.wedding_invitation.domain.member.dto.response.MemberLoginResponse;
 import com.wedding.wedding_invitation.domain.member.entity.Member;
 import com.wedding.wedding_invitation.domain.member.entity.MemberRole;
@@ -114,6 +111,20 @@ public class MemberServiceTest {
                 .build();
     }
 
+    private MemberFindUsernameRequest createMemberFindUsernameRequest () {
+        return MemberFindUsernameRequest.builder()
+                .name("홍길동")
+                .email("test@email.com")
+                .build();
+    }
+
+    private MemberFindPasswordRequest createMemberFindPasswordRequest() {
+        return MemberFindPasswordRequest.builder()
+                .username("testUser")
+                .email("test@email.com")
+                .build();
+    }
+
 //    ===============================   테스트 로직 라인   ===============================
 
     @Test
@@ -128,8 +139,10 @@ public class MemberServiceTest {
     @DisplayName("아이디 중복 확인 테스트 - 이미 사용중")
     void duplication_Username_Fail_Test() {
         given(memberRepository.existsByUsername(anyString())).willReturn(true);
-        String result = memberService.checkUsername("testUser");
-        assertThat(result).isEqualTo("이미 사용중인 아이디 입니다.");
+//        String result = memberService.checkUsername("testUser");
+//        assertThat(result).isEqualTo("이미 사용중인 아이디 입니다.");
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> memberService.checkUsername("testUser"));
+        System.out.println("발생한 예외 메세지 : {} " + exception);
     }
 
     @Test
@@ -144,25 +157,29 @@ public class MemberServiceTest {
     @DisplayName("이메일 중복 확인 테스트 - 이미 사용중")
     void duplication_Email_Fail_Test() {
         given(memberRepository.existsByEmail(anyString())).willReturn(true);
-        String result = memberService.checkEmail("test@email.com");
-        assertThat(result).isEqualTo("이미 사용중인 이메일 입니다.");
+//        String result = memberService.checkEmail("test@email.com");
+//        assertThat(result).isEqualTo("이미 사용중인 이메일 입니다.");
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> memberService.checkEmail("test@email.com"));
+        System.out.println("발생한 예외 메세지 : {} " + exception);
     }
 
     @Test
     @DisplayName("아이디 찾기 테스트 - 성공")
     void find_Username_Test() {
         Member member = createMemberEntity();
+        MemberFindUsernameRequest request = createMemberFindUsernameRequest();
         given(memberRepository.findByNameAndEmail(anyString(), anyString())).willReturn(Optional.of(member));
-        String result = memberService.findUsername("홍길동", "test@email.com");
+        String result = memberService.findUsername(request);
         assertThat(result).isEqualTo("testUser");
     }
 
     @Test
     @DisplayName("아이디 찾기 테스트 - 존재하지 않는 아이디")
     void find_Username_Fail_Test() {
+        MemberFindUsernameRequest request = createMemberFindUsernameRequest();
         given(memberRepository.findByNameAndEmail(anyString(), anyString())).willReturn(Optional.empty());
         IllegalArgumentException exception = assertThrows(IllegalArgumentException.class,
-                () -> memberService.findUsername("강감찬", "Test@email.com"));
+                () -> memberService.findUsername(request));
         System.out.println("발생한 예외 메시지: " + exception.getMessage());
     }
 
@@ -170,17 +187,19 @@ public class MemberServiceTest {
     @DisplayName("비밀번호 찾기 테스트 - 성공")
     void find_Password_Test() {
         Member member = createMemberEntity();
+        MemberFindPasswordRequest request = createMemberFindPasswordRequest();
         given(memberRepository.findByUsernameAndEmail(anyString(), anyString())).willReturn(Optional.of(member));
-        String result = memberService.findPassword("testUser", "test@email.com");
+        String result = memberService.findPassword(request);
         assertThat(result).isEqualTo(member.getPassword());
     }
 
     @Test
     @DisplayName("비밀번호 찾기 테스트 - 존재하지 않는 회원")
     void find_Password_Fail_Test() {
+        MemberFindPasswordRequest request = createMemberFindPasswordRequest();
         given(memberRepository.findByUsernameAndEmail(anyString(), anyString())).willReturn(Optional.empty());
         IllegalArgumentException exception = assertThrows(IllegalArgumentException.class,
-                () -> memberService.findPassword("testUser", "test@email.com"));
+                () -> memberService.findPassword(request));
         System.out.println("예외 발생 메세지: " + exception.getMessage());
     }
 

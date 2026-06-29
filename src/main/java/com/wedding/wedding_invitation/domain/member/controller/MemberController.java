@@ -1,9 +1,7 @@
 package com.wedding.wedding_invitation.domain.member.controller;
 
 
-import com.wedding.wedding_invitation.domain.member.dto.request.MemberChangePasswordRequest;
-import com.wedding.wedding_invitation.domain.member.dto.request.MemberLoginRequest;
-import com.wedding.wedding_invitation.domain.member.dto.request.MemberSignUpRequest;
+import com.wedding.wedding_invitation.domain.member.dto.request.*;
 import com.wedding.wedding_invitation.domain.member.dto.response.MemberLoginResponse;
 import com.wedding.wedding_invitation.domain.member.service.MemberService;
 import lombok.RequiredArgsConstructor;
@@ -37,16 +35,16 @@ public class MemberController {
     }
 
     // 아이디찾기
-    @GetMapping("/find-username")
-    public ResponseEntity<String> findUsername(@RequestParam String name, String email){
-        String username = memberService.findUsername(name, email);
+    @PostMapping("/find-username")
+    public ResponseEntity<String> findUsername(@RequestBody MemberFindUsernameRequest request){
+        String username = memberService.findUsername(request);
         return ResponseEntity.ok(username);
     }
 
     // 비밀번호찾기
-    @GetMapping("/find-password")
-    public ResponseEntity<String> findPassword(@RequestParam String username, String email) {
-        String password = memberService.findPassword(username, email);
+    @PostMapping("/find-password")
+    public ResponseEntity<String> findPassword(@RequestBody MemberFindPasswordRequest request) {
+        String password = memberService.findPassword(request);
         return ResponseEntity.ok(password);
     }
 
@@ -63,7 +61,7 @@ public class MemberController {
 
 
     // 비밀번호 변경
-    @PatchMapping("change-password")
+    @PatchMapping("/change-password")
     public ResponseEntity<String> changePassword(@RequestBody MemberChangePasswordRequest request) {
         String result = memberService.changePassword(request);
 
@@ -72,5 +70,11 @@ public class MemberController {
 
 
     // 주소지 변경
+    @PatchMapping("/change-address")
+    public ResponseEntity<String> changeAddress(@RequestBody MemberChangeAddressRequest request) {
+        String result = memberService.changeAddress(request);
+
+        return ResponseEntity.ok(result);
+    }
 
 }
