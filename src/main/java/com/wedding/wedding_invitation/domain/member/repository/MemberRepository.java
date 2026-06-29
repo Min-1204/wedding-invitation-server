@@ -20,8 +20,4 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
     // 회원 찾기
     Optional<Member> findByUsername(String username);
 
-    // 로그인 (검증)
-    // 로그아웃 (실행)
-    // 비밀번호 변경 (검증 , 실행)
-    // 주소지 변경 (실행)
 }

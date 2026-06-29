@@ -1,9 +1,6 @@
 package com.wedding.wedding_invitation.domain.member.service;
 
-import com.wedding.wedding_invitation.domain.member.dto.request.MemberChangeAddressRequest;
-import com.wedding.wedding_invitation.domain.member.dto.request.MemberChangePasswordRequest;
-import com.wedding.wedding_invitation.domain.member.dto.request.MemberLoginRequest;
-import com.wedding.wedding_invitation.domain.member.dto.request.MemberSignUpRequest;
+import com.wedding.wedding_invitation.domain.member.dto.request.*;
 import com.wedding.wedding_invitation.domain.member.dto.response.MemberLoginResponse;
 import com.wedding.wedding_invitation.domain.member.entity.Member;
 import com.wedding.wedding_invitation.domain.member.repository.MemberRepository;
@@ -21,7 +18,7 @@ public class MemberService {
     // 아이디 중복확인
     public String checkUsername(String username) {
         if (memberRepository.existsByUsername(username)) {
-            return "이미 사용중인 아이디 입니다.";
+           throw new  IllegalArgumentException("이미 사용중인 아이디입니다.");
         }
         return "사용 가능한 아이디 입니다.";
     }
@@ -29,11 +26,13 @@ public class MemberService {
     // 이메일 중복 확인
     public String checkEmail(String email) {
         if(memberRepository.existsByEmail(email)) {
-            return "이미 사용중인 이메일 입니다.";
+            throw new IllegalArgumentException("이미 사용중인 이메일입니다.");
         }
         return "사용 가능한 이메일 입니다.";
     }
 
+    
+    // 회원가입
     public void signUp(MemberSignUpRequest request) {
 
         if(memberRepository.existsByUsername(request.getUsername())) {
@@ -51,16 +50,16 @@ public class MemberService {
 
 
     // 아이디 찾기
-    public String findUsername(String name, String email) {
-        Member user = memberRepository.findByNameAndEmail(name, email)
+    public String findUsername(MemberFindUsernameRequest request) {
+        Member user = memberRepository.findByNameAndEmail(request.getName(), request.getEmail())
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 회원 입니다."));
         String findUser = user.getUsername();
         return findUser;
     }
 
     // 비밀번호 찾기
-    public String findPassword(String username, String email) {
-        Member user = memberRepository.findByUsernameAndEmail(username, email)
+    public String findPassword(MemberFindPasswordRequest request) {
+        Member user = memberRepository.findByUsernameAndEmail(request.getUsername(), request.getEmail())
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 회원 입니다."));
         String findUser = user.getPassword();
         return findUser;
